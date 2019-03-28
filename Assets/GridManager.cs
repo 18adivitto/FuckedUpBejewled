@@ -88,7 +88,7 @@ public class GridManager : MonoBehaviour
             SceneManager.LoadScene("GridTest");
         }
 
-        
+        NoRows();
 
         if (BoolHub.isRefreshing)
         {
@@ -98,51 +98,38 @@ public class GridManager : MonoBehaviour
        
     }
 
-    void NoRows()
+    void NoRows() //i can now detect three-in-a-rows in both the up and down direction, but it changes the color instead of deleting them (havent impplemented this yet)
     {
         for (int i = 0; i < 7; i++)
         {
             for (int ii = 0; ii < 5; ii++)
             {
-                // x values: if there is a matching block to either side of you
-                if (ii < 4)
+                // Columns/x values: if there is a matching block to either side of you
+                if (ii < 4 && ii > 0)
                 {
-                    if (_gemGrid[i, ii] == _gemGrid[i, ii + 1])
+                    if ((_gemGrid[i, ii] == _gemGrid[i, ii + 1]) && (_gemGrid[i, ii] == _gemGrid[i, ii - 1]))
                     {
                         
                         _gemGrid[i, ii] = (Random.Range(0, 5));
+                        _gemGrid[i, ii+1] = (Random.Range(0, 5));
+                        _gemGrid[i, ii-1] = (Random.Range(0, 5));
                         BoolHub.isRefreshing = true;
                     }
                 }
-                if (ii > 0)
+                
+                //Rows/y values: if there is a matching block above or below you
+                if (i < 6 && i > 0)
                 {
-                    if (_gemGrid[i, ii] == _gemGrid[i, ii - 1])
+                    if ((_gemGrid[i, ii] == _gemGrid[i+1, ii]) && (_gemGrid[i, ii] == _gemGrid[i - 1, ii]))
                     {
                         
-                        _gemGrid[i, ii] = (Random.Range(0, 5));
+                        _gemGrid[i, ii] = (Random.Range(0, 5)); 
+                        _gemGrid[i+1, ii] = (Random.Range(0, 5)); 
+                        _gemGrid[i-1, ii] = (Random.Range(0, 5)); 
                         BoolHub.isRefreshing = true;
                     }
                 }
-                //y values: if there is a matching block above or below you
-                if (i < 6)
-                {
-                    if (_gemGrid[i, ii] == _gemGrid[i+1, ii])
-                    {
-                        
-                        _gemGrid[i, ii] = (Random.Range(0, 5));
-                        BoolHub.isRefreshing = true;
-                    }
-                }
-                if (i > 0)
-                {
-                    if (_gemGrid[i, ii] == _gemGrid[i-1, ii])
-                    {
-                        
-                        _gemGrid[i, ii] = (Random.Range(0, 5));
-                        BoolHub.isRefreshing = true;
-                    }
-                }
-
+                
                 
             }
         }
