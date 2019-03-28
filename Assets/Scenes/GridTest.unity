@@ -204,6 +204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 965694972}
   - component: {fileID: 965694971}
+  - component: {fileID: 965694973}
   m_Layer: 0
   m_Name: GridBoy
   m_TagString: Untagged
@@ -228,6 +229,8 @@ MonoBehaviour:
   _gem2: {fileID: 322544228345830273, guid: f30a7a67e3a17914489b8f3da2d2b5e7, type: 3}
   _gem3: {fileID: 322544228345830273, guid: 358cdc86352848b46a6202a9f3be8ba6, type: 3}
   _gem4: {fileID: 322544228345830273, guid: 53d285935a5d184449f2cbab93df5bba, type: 3}
+  emptySpace: {fileID: 8063594782221857412, guid: bb75378aeec3da644b0124d102dec0cc,
+    type: 3}
   playerGO: {fileID: 322544228345830273, guid: c53931e176c38fe4fa75ee3f0f00c8ac, type: 3}
 --- !u!4 &965694972
 Transform:
@@ -243,33 +246,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2129312978
-GameObject:
+--- !u!114 &965694973
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2129312979}
-  m_Layer: 0
-  m_Name: GitTest
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2129312979
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2129312978}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.2633276, y: 3.7841876, z: -0.028689213}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 965694970}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 002d7b1dea0619649aa5ed1dbb57872b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GridManager : MonoBehaviour
 {
+    //*****VERY IMPORTANT**** if you walk into groups of two, then it gets rid of them becuase the player script duplicates the value in the array, then the grid manager sets the spot to empty
+    // since it occurs in this order, for a frame or two in the array, there is an extra duplicated value, which makes a group of three! 
 
     public static int[,] _gemGrid;
 
@@ -15,6 +17,7 @@ public class GridManager : MonoBehaviour
     public GameObject _gem2;
     public GameObject _gem3;
     public GameObject _gem4;
+    public GameObject emptySpace;
 
     public GameObject playerGO;
     // Start is called before the first frame update
@@ -70,7 +73,7 @@ public class GridManager : MonoBehaviour
                     Instantiate(playerGO, new Vector3(ii, i), Quaternion.identity);
                 }
 
-                NoRows(); // makes sure that upon initial generation there are no pre constructed rows
+                NoRowsInitialize(); // makes sure that upon initial generation there are no pre constructed rows
             }
         }
 
@@ -81,14 +84,17 @@ public class GridManager : MonoBehaviour
     
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyUp(KeyCode.R))
         {
             SceneManager.LoadScene("GridTest");
         }
 
-        NoRows();
+        
+            NoRows();
+       
+            
 
         if (BoolHub.isRefreshing)
         {
@@ -98,7 +104,7 @@ public class GridManager : MonoBehaviour
        
     }
 
-    void NoRows() //i can now detect three-in-a-rows in both the up and down direction, but it changes the color instead of deleting them (havent impplemented this yet)
+    void NoRows() //now it sets it to an empty space, but since it just changes it to the same value, it becomes recursive
     {
         for (int i = 0; i < 7; i++)
         {
@@ -107,12 +113,12 @@ public class GridManager : MonoBehaviour
                 // Columns/x values: if there is a matching block to either side of you
                 if (ii < 4 && ii > 0)
                 {
-                    if ((_gemGrid[i, ii] == _gemGrid[i, ii + 1]) && (_gemGrid[i, ii] == _gemGrid[i, ii - 1]))
+                    if (((_gemGrid[i, ii] == _gemGrid[i, ii + 1]) && (_gemGrid[i, ii] == _gemGrid[i, ii - 1]))&&_gemGrid[i,ii] != 5)
                     {
                         
-                        _gemGrid[i, ii] = (Random.Range(0, 5));
-                        _gemGrid[i, ii+1] = (Random.Range(0, 5));
-                        _gemGrid[i, ii-1] = (Random.Range(0, 5));
+                        _gemGrid[i, ii] = 5;
+                        _gemGrid[i, ii+1] = 5;
+                        _gemGrid[i, ii-1] = 5;
                         BoolHub.isRefreshing = true;
                     }
                 }
@@ -120,12 +126,12 @@ public class GridManager : MonoBehaviour
                 //Rows/y values: if there is a matching block above or below you
                 if (i < 6 && i > 0)
                 {
-                    if ((_gemGrid[i, ii] == _gemGrid[i+1, ii]) && (_gemGrid[i, ii] == _gemGrid[i - 1, ii]))
+                    if (((_gemGrid[i, ii] == _gemGrid[i+1, ii]) && (_gemGrid[i, ii] == _gemGrid[i - 1, ii]))&& _gemGrid[i, ii] != 5)
                     {
                         
-                        _gemGrid[i, ii] = (Random.Range(0, 5)); 
-                        _gemGrid[i+1, ii] = (Random.Range(0, 5)); 
-                        _gemGrid[i-1, ii] = (Random.Range(0, 5)); 
+                        _gemGrid[i, ii] = 5;
+                        _gemGrid[i+1, ii] = 5;
+                        _gemGrid[i - 1, ii] = 5; 
                         BoolHub.isRefreshing = true;
                     }
                 }
@@ -136,58 +142,45 @@ public class GridManager : MonoBehaviour
 
     }
 
-    void NoRowsBackup()
+    void NoRowsInitialize() //just forthe start loop
     {
         for (int i = 0; i < 7; i++)
         {
             for (int ii = 0; ii < 5; ii++)
             {
-                // x values: if there is a matching block to either side of you
-                if (ii < 4)
+                // Columns/x values: if there is a matching block to either side of you
+                if (ii < 4 && ii > 0)
                 {
-                    if (_gemGrid[i, ii] == _gemGrid[i, ii + 1])
+                    if (((_gemGrid[i, ii] == _gemGrid[i, ii + 1]) && (_gemGrid[i, ii] == _gemGrid[i, ii - 1])))
                     {
-
-                        _gemGrid[i, ii] = (Random.Range(0, 5));
+                        
+                        _gemGrid[i, ii] = Random.Range(0,5);
+                        _gemGrid[i, ii+1] = Random.Range(0, 5);
+                        _gemGrid[i, ii-1] = Random.Range(0, 5);
                         BoolHub.isRefreshing = true;
                     }
                 }
-                if (ii > 0)
+                
+                //Rows/y values: if there is a matching block above or below you
+                if (i < 6 && i > 0)
                 {
-                    if (_gemGrid[i, ii] == _gemGrid[i, ii - 1])
+                    if (((_gemGrid[i, ii] == _gemGrid[i+1, ii]) && (_gemGrid[i, ii] == _gemGrid[i - 1, ii])))
                     {
-
-                        _gemGrid[i, ii] = (Random.Range(0, 5));
+                        
+                        _gemGrid[i, ii] = Random.Range(0, 5);
+                        _gemGrid[i+1, ii] = Random.Range(0, 5);
+                        _gemGrid[i - 1, ii] = Random.Range(0, 5);
                         BoolHub.isRefreshing = true;
                     }
                 }
-                //y values: if there is a matching block above or below you
-                if (i < 6)
-                {
-                    if (_gemGrid[i, ii] == _gemGrid[i + 1, ii])
-                    {
-
-                        _gemGrid[i, ii] = (Random.Range(0, 5));
-                        BoolHub.isRefreshing = true;
-                    }
-                }
-                if (i > 0)
-                {
-                    if (_gemGrid[i, ii] == _gemGrid[i - 1, ii])
-                    {
-
-                        _gemGrid[i, ii] = (Random.Range(0, 5));
-                        BoolHub.isRefreshing = true;
-                    }
-                }
-
-
+                
+                
             }
         }
 
     }
 
-
+    
     void RefreshGrid()
     {
 
@@ -215,9 +208,13 @@ public class GridManager : MonoBehaviour
                 {
                     Instantiate(_gem4, new Vector3(ii, i), Quaternion.identity);
                 }
+                if (_gemGrid[i, ii] == 5)
+                {
+                    Instantiate(emptySpace, new Vector3(ii, i), Quaternion.identity);
+                }
 
             }
         }
-        BoolHub.isRefreshing = false;
+       BoolHub.isRefreshing = false;
     }
 }

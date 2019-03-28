@@ -19,8 +19,8 @@ public class GemScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.W))
         {
-            
-            StartCoroutine("ClearGrid");
+            Destroy(this.gameObject);
+           // StartCoroutine("ClearGrid");
         }
     }
 
@@ -28,7 +28,7 @@ public class GemScript : MonoBehaviour
     IEnumerator ClearGrid()
     {
         //Debug.Log("refreshWorks");
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.0f);
         Destroy(this.gameObject);
         
     }
