@@ -69,10 +69,13 @@ public class GridManager : MonoBehaviour
                 {
                     Instantiate(playerGO, new Vector3(ii, i), Quaternion.identity);
                 }
+
+                NoRows(); // makes sure that upon initial generation there are no pre constructed rows
             }
         }
 
-
+        
+        
     }
 
     
@@ -85,29 +88,121 @@ public class GridManager : MonoBehaviour
             SceneManager.LoadScene("GridTest");
         }
 
+        
+
         if (BoolHub.isRefreshing)
         {
             RefreshGrid();
         }
 
-        ThreeInARow();
+       
     }
 
-    void ThreeInARow()
+    void NoRows()
     {
-        if (_gemGrid[6,1] == 2)
+        for (int i = 0; i < 7; i++)
         {
-            Debug.Log("6,1 is red" + Time.deltaTime);
+            for (int ii = 0; ii < 5; ii++)
+            {
+                // x values: if there is a matching block to either side of you
+                if (ii < 4)
+                {
+                    if (_gemGrid[i, ii] == _gemGrid[i, ii + 1])
+                    {
+                        
+                        _gemGrid[i, ii] = (Random.Range(0, 5));
+                        BoolHub.isRefreshing = true;
+                    }
+                }
+                if (ii > 0)
+                {
+                    if (_gemGrid[i, ii] == _gemGrid[i, ii - 1])
+                    {
+                        
+                        _gemGrid[i, ii] = (Random.Range(0, 5));
+                        BoolHub.isRefreshing = true;
+                    }
+                }
+                //y values: if there is a matching block above or below you
+                if (i < 6)
+                {
+                    if (_gemGrid[i, ii] == _gemGrid[i+1, ii])
+                    {
+                        
+                        _gemGrid[i, ii] = (Random.Range(0, 5));
+                        BoolHub.isRefreshing = true;
+                    }
+                }
+                if (i > 0)
+                {
+                    if (_gemGrid[i, ii] == _gemGrid[i-1, ii])
+                    {
+                        
+                        _gemGrid[i, ii] = (Random.Range(0, 5));
+                        BoolHub.isRefreshing = true;
+                    }
+                }
+
+                
+            }
         }
+
     }
+
+    void NoRowsBackup()
+    {
+        for (int i = 0; i < 7; i++)
+        {
+            for (int ii = 0; ii < 5; ii++)
+            {
+                // x values: if there is a matching block to either side of you
+                if (ii < 4)
+                {
+                    if (_gemGrid[i, ii] == _gemGrid[i, ii + 1])
+                    {
+
+                        _gemGrid[i, ii] = (Random.Range(0, 5));
+                        BoolHub.isRefreshing = true;
+                    }
+                }
+                if (ii > 0)
+                {
+                    if (_gemGrid[i, ii] == _gemGrid[i, ii - 1])
+                    {
+
+                        _gemGrid[i, ii] = (Random.Range(0, 5));
+                        BoolHub.isRefreshing = true;
+                    }
+                }
+                //y values: if there is a matching block above or below you
+                if (i < 6)
+                {
+                    if (_gemGrid[i, ii] == _gemGrid[i + 1, ii])
+                    {
+
+                        _gemGrid[i, ii] = (Random.Range(0, 5));
+                        BoolHub.isRefreshing = true;
+                    }
+                }
+                if (i > 0)
+                {
+                    if (_gemGrid[i, ii] == _gemGrid[i - 1, ii])
+                    {
+
+                        _gemGrid[i, ii] = (Random.Range(0, 5));
+                        BoolHub.isRefreshing = true;
+                    }
+                }
+
+
+            }
+        }
+
+    }
+
 
     void RefreshGrid()
     {
-
-
-
-
-
 
         for (int i = 0; i < 7; i++)
         {

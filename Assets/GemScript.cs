@@ -27,7 +27,7 @@ public class GemScript : MonoBehaviour
 
     IEnumerator ClearGrid()
     {
-        Debug.Log("refreshWorks");
+        //Debug.Log("refreshWorks");
         yield return new WaitForSeconds(.1f);
         Destroy(this.gameObject);
         
