@@ -13,6 +13,11 @@ public class GridManager : MonoBehaviour
     public GameObject PlayerGO;
     public GameObject emptySpace;
 
+    public GameObject explosion;
+
+    public AudioClip boom;
+    AudioSource audioPP;
+
     public GameObject[] gemTypes;
 
     GameObject tempGem;
@@ -24,6 +29,8 @@ public class GridManager : MonoBehaviour
     void Start()
     {
         gemGrid = new GameObject[7, 5];
+
+        audioPP = Camera.main.GetComponent<AudioSource>();
 
         for (int i = 0; i < 7; i++)
         {
@@ -45,7 +52,7 @@ public class GridManager : MonoBehaviour
         }
 
         NoRowsInitialize();
-
+        StartCoroutine("GridFaller");
     }
 
     void NoRowsInitialize() //just forthe start loop
@@ -91,15 +98,22 @@ public class GridManager : MonoBehaviour
     {
 
         NoRows();
-
-        GridFall();
-
+        
+        
+        
         RefreshRow();
 
         if (BoolHub.isRefreshing)
         {
             RefreshGrid();
         }
+    }
+
+    IEnumerator GridFaller()
+    {
+        GridFall();
+        yield return new WaitForSeconds(.25f);
+        StartCoroutine("GridFaller");
     }
 
     void NoRows()
@@ -112,15 +126,23 @@ public class GridManager : MonoBehaviour
                 {
                     if ((gemGrid[i, ii].tag == gemGrid[i, ii + 1].tag) && (gemGrid[i, ii].tag == gemGrid[i, ii - 1].tag)&&(gemGrid[i, ii].tag != "VOID"))
                     {
+                        MoveCount.moves = 10;
+                        BoolHub.Score += 3;
+                        audioPP.PlayOneShot(boom, 0.45f);
+                        Instantiate(explosion, new Vector3(ii,i), Quaternion.identity);
+                        Instantiate(explosion, new Vector3(ii + 1, i), Quaternion.identity);
+                        Instantiate(explosion, new Vector3(ii - 1, i), Quaternion.identity);
                         //row 1
                         if (ii == 1)
                         {
                             if (gemGrid[i,ii].tag == gemGrid[i,ii + 2].tag)
                             {
+                                BoolHub.Score += 1;
                                 gemGrid[i, ii + 2] = emptySpace;
 
                                 if (gemGrid[i, ii].tag == gemGrid[i, ii + 3].tag)
                                 {
+                                    BoolHub.Score += 1;
                                     gemGrid[i, ii + 3] = emptySpace;
                                 }
                             }
@@ -131,11 +153,13 @@ public class GridManager : MonoBehaviour
                         {
                             if (gemGrid[i, ii].tag == gemGrid[i, ii + 2].tag)
                             {
+                                BoolHub.Score += 1;
                                 gemGrid[i, ii + 2] = emptySpace;
                             }
 
                             if (gemGrid[i, ii].tag == gemGrid[i, ii - 2].tag)
                             {
+                                BoolHub.Score += 1;
                                 gemGrid[i, ii - 2] = emptySpace;
                             }
                         }
@@ -144,10 +168,12 @@ public class GridManager : MonoBehaviour
                         {
                             if (gemGrid[i, ii].tag == gemGrid[i, ii - 2].tag)
                             {
+                                BoolHub.Score += 1;
                                 gemGrid[i, ii - 2] = emptySpace;
 
                                 if (gemGrid[i, ii].tag == gemGrid[i, ii - 3].tag)
                                 {
+                                    BoolHub.Score += 1;
                                     gemGrid[i, ii - 3] = emptySpace;
                                 }
                             }
@@ -163,20 +189,29 @@ public class GridManager : MonoBehaviour
                     //row 1
                     if ((gemGrid[i, ii].tag == gemGrid[i + 1, ii].tag) && (gemGrid[i, ii].tag == gemGrid[i - 1, ii].tag) & (gemGrid[i, ii].tag != "VOID"))
                     {
-
+                        MoveCount.moves = 10;
+                        BoolHub.Score += 3;
+                        audioPP.PlayOneShot(boom, 0.45f);
+                        Instantiate(explosion, new Vector3(ii, i), Quaternion.identity);
+                        Instantiate(explosion, new Vector3(ii, i+1), Quaternion.identity);
+                        Instantiate(explosion, new Vector3(ii, i-1), Quaternion.identity);
                         if (i == 1)
                         {
                             if (gemGrid[i, ii].tag == gemGrid[i + 2, ii].tag)
                             {
+                                BoolHub.Score += 1;
                                 gemGrid[i + 2, ii] = emptySpace;
                                 if (gemGrid[i, ii].tag == gemGrid[i + 3, ii].tag)
                                 {
+                                    BoolHub.Score += 1;
                                     gemGrid[i + 3, ii] = emptySpace;
                                     if (gemGrid[i, ii].tag == gemGrid[i + 4, ii].tag)
                                     {
+                                        BoolHub.Score += 1;
                                         gemGrid[i + 4, ii] = emptySpace;
                                         if (gemGrid[i, ii].tag == gemGrid[i + 5, ii].tag)
                                         {
+                                            BoolHub.Score += 1;
                                             gemGrid[i + 5, ii] = emptySpace;
                                         }
                                     }
@@ -191,12 +226,15 @@ public class GridManager : MonoBehaviour
                         {
                             if (gemGrid[i, ii].tag == gemGrid[i + 2, ii].tag)
                             {
+                                BoolHub.Score += 1;
                                 gemGrid[i + 2, ii] = emptySpace;
                                 if (gemGrid[i, ii].tag == gemGrid[i + 3, ii].tag)
                                 {
+                                    BoolHub.Score += 1;
                                     gemGrid[i + 3, ii] = emptySpace;
                                     if (gemGrid[i, ii].tag == gemGrid[i + 4, ii].tag)
                                     {
+                                        BoolHub.Score += 1;
                                         gemGrid[i + 4, ii] = emptySpace;
                                     }
                                 }
@@ -204,6 +242,7 @@ public class GridManager : MonoBehaviour
                             
                             if (gemGrid[i, ii].tag == gemGrid[i - 2, ii].tag)
                             {
+                                BoolHub.Score += 1;
                                 gemGrid[i - 2, ii] = emptySpace;
                             }
 
@@ -213,18 +252,22 @@ public class GridManager : MonoBehaviour
                         {
                             if (gemGrid[i, ii].tag == gemGrid[i + 2, ii].tag)
                             {
+                                BoolHub.Score += 1;
                                 gemGrid[i + 2, ii] = emptySpace;
                                 if (gemGrid[i, ii].tag == gemGrid[i + 3, ii].tag)
                                 {
+                                    BoolHub.Score += 1;
                                     gemGrid[i + 3, ii] = emptySpace;
                                 }
                             }
                             
                             if (gemGrid[i, ii].tag == gemGrid[i - 2, ii].tag)
                             {
+                                BoolHub.Score += 1;
                                 gemGrid[i - 2, ii] = emptySpace;
                                 if (gemGrid[i, ii].tag == gemGrid[i - 3, ii].tag)
                                 {
+                                    BoolHub.Score += 1;
                                     gemGrid[i - 3, ii] = emptySpace;
                                 }
                             }
@@ -235,16 +278,20 @@ public class GridManager : MonoBehaviour
                         {
                             if (gemGrid[i, ii].tag == gemGrid[i + 2, ii].tag)
                             {
+                                BoolHub.Score += 1;
                                 gemGrid[i + 2, ii] = emptySpace;
                             }
                             if (gemGrid[i, ii].tag == gemGrid[i - 2, ii].tag)
                             {
+                                BoolHub.Score += 1;
                                 gemGrid[i - 2, ii] = emptySpace;
                                 if (gemGrid[i, ii].tag == gemGrid[i - 3, ii].tag)
                                 {
+                                    BoolHub.Score += 1;
                                     gemGrid[i - 3, ii] = emptySpace;
                                     if (gemGrid[i, ii].tag == gemGrid[i - 4, ii].tag)
                                     {
+                                        BoolHub.Score += 1;
                                         gemGrid[i - 4, ii] = emptySpace;
                                     }
                                 }
@@ -255,15 +302,19 @@ public class GridManager : MonoBehaviour
                         {
                             if (gemGrid[i, ii].tag == gemGrid[i - 2, ii].tag)
                             {
+                                BoolHub.Score += 1;
                                 gemGrid[i - 2, ii] = emptySpace;
                                 if (gemGrid[i, ii].tag == gemGrid[i - 3, ii].tag)
                                 {
+                                    BoolHub.Score += 1;
                                     gemGrid[i - 3, ii] = emptySpace;
                                     if (gemGrid[i, ii].tag == gemGrid[i - 4, ii].tag)
                                     {
+                                        BoolHub.Score += 1;
                                         gemGrid[i - 4, ii] = emptySpace;
                                         if (gemGrid[i, ii].tag == gemGrid[i - 5, ii].tag)
                                         {
+                                            BoolHub.Score += 1;
                                             gemGrid[i - 5, ii] = emptySpace;
                                         }
                                     }

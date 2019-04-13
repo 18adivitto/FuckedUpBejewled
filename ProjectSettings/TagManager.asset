@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - VOID
+  - orange
+  - green
+  - pink
+  - blue
+  - yellow
+  - red
   layers:
   - Default
   - TransparentFX
@@ -38,6 +45,21 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: AAA
+    uniqueID: 2437095369
+    locked: 0
+  - name: New Layer
+    uniqueID: 2723963133
+    locked: 0
+  - name: FUCK
+    uniqueID: 3903222739
+    locked: 0
+  - name: gems
+    uniqueID: 1249065645
+    locked: 0
+  - name: whitescreen
+    uniqueID: 1175697995
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
